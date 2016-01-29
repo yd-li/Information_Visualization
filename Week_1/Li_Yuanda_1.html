@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>This is an Visualization</title>
+        <style>
+            li:hover {
+                background-color: black;
+                color:white;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 style="background-color:black;color:white">Gapiminder - Wealth and Health</h1>
+        <h2>Countries</h2>
+        <div>
+            <label>Name</label>
+            <input type="text" id="countryInput">
+            <button onclick="addCountry();">Add</button>
+        </div>
+        <hr>
+        <ul id="countryList" style="list-style-type:none">
+            <li>USA</li>
+            <li>Mexico</li>
+            <li>Canada</li>
+        </ul>
+    </body>
+    <script>
+        function addCountry() {
+            var country = document.getElementById("countryInput").value;
+            var list = document.getElementById("countryList");
+            var newEntry = document.createElement("li");
+            newEntry.innerHTML = country;
+            list.appendChild(newEntry);
+        }
+    </script>
+</html>
