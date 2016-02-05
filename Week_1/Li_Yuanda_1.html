@@ -1,7 +1,31 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <title>This is an Visualization</title>
+        <title>Gapiminder - Wealth and Health</title>
         <style>
+            body {
+                font-family: arial;
+                margin: 0;
+            }
+            h1 {
+                margin: 0;
+                padding: 5px;
+                background-color:black;
+                color:white;
+            }
+            h2 {
+                padding-left: 5px;
+            }
+            div {
+                padding-left: 5px;
+            }
+            ul {
+                list-style-type: none;
+                padding-left: 10px;
+            }
+            li {
+                padding: 2px;
+            }
             li:hover {
                 background-color: black;
                 color:white;
@@ -9,19 +33,21 @@
         </style>
     </head>
     <body>
-        <h1 style="background-color:black;color:white">Gapiminder - Wealth and Health</h1>
-        <h2>Countries</h2>
+        <h1 >Gapiminder - Wealth and Health</h1>
         <div>
+            <h2>Countries</h2>
+            <div>
             <label>Name</label>
             <input type="text" id="countryInput">
             <button onclick="addCountry();">Add</button>
-        </div>
+            </div>
         <hr>
-        <ul id="countryList" style="list-style-type:none">
+        <ul id="countryList">
             <li>USA</li>
             <li>Mexico</li>
             <li>Canada</li>
         </ul>
+        </div>
     </body>
     <script>
         function addCountry() {
