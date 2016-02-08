@@ -23,29 +23,31 @@
         </style>
     </head>
     <body>
-        <h1>Gapiminder - Wealth and Health of Nations</h1>
-        <h2>Countries</h2>
-        <div id="viz"></div>
+        <div>
+            <h1>Gapiminder - Wealth and Health of Nations</h1>
+            <h2>Countries</h2>
+            <div id="viz"></div>
+        </div>
     </body>
     
-    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script>
         var viz = d3.select("#viz");
-        var numbers = [1, 2, 3, 4, 5];
+        var countries = [];
         d3.json("https://raw.githubusercontent.com/CristianFelix/infoviz/master/gapminder.json", function(error, result) {
-            numbers = result;
+            countries = result;
             render();
         })
         
         function render() {
             var changes = viz.selectAll("div")
-                            .data(numbers, function(d) {return d.name});
+                            .data(countries, function(d) {return d.name});
             changes.enter()
                     .append("div")
                     .text(function(d) {return d.name});
             changes.exit().remove();
             changes.on("click", function(d, i) {
-                numbers.splice(i, 1);
+                countries.splice(i, 1);
                 render();
             })
         }
@@ -53,8 +55,8 @@
         render();
         
         function addNumber() {
-            var newNumber = d3.select("#number").node().value;
-            numbers.push(newNumber);
+            var newNumber = d3.select("#countries").node().value;
+            countries.push(newNumber);
             render();
         }
     </script>
