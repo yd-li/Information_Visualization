@@ -1,0 +1,105 @@
+<html>
+    <head>
+        <title>Gapiminder - Wealth and Health of Nations</title>
+    </head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: arial;
+        }
+        h1 {
+            background-color: black;
+            color: white;
+            padding: 5px 0 5px 8px;
+        }
+        h2 {
+            padding: 0 0 0 5px;
+        }
+        div {
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            margin: 0;
+            padding-left: 10px;
+            float: left;
+        }
+        li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    </style>
+    <body>
+        <h1>Gapiminder - Wealth and Health of Nations</h1>
+        <div>
+            <h2>Countries</h2>
+            <ul id="countryList"></ul>
+            <svg width="800" height="600">
+                <g id="dotGroup"></g>
+            </svg>
+        </div>
+    </body>
+
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script>
+        var viz = d3.select("#countryList");
+        var regions = [];
+        d3.json("https://raw.githubusercontent.com/CristianFelix/infoviz/master/Week%203/newData.json", function(error, result){
+            data = result;
+            dataFiltered = data.filter(function(d) { return d.income[2008] != undefined });
+
+            renderCountry();
+            renderGraph(data)
+        })
+        
+        function renderCountry() {
+            var changes = viz.selectAll("li")
+                            .data(data, function(d) { return d.name });
+            changes.enter()
+                    .append("li")
+                    .text(function(d) { return d.name });
+        }
+        
+        var vizDot = d3.select("#dotGroup");
+        var width = 800,
+            height = 600,
+            margin = {top: 90, right: 20, bottom: 20, left: 20},
+            innerWidth = width - margin.left - margin.right,
+            innerHeight = height - margin.top - margin.bottom;
+        var xScale = d3.scale.linear().range([10, innerWidth]),
+            yScale = d3.scale.linear().range([innerHeight, 10]),
+            rScale = d3.scale.linear().range([5, 25]);
+        var colorScale = d3.scale.category10();
+        
+        function renderGraph() {
+            var dataPoints = vizDot.selectAll("circle")
+                .data(dataFiltered);
+            
+            xScale.domain(d3.extent(data, function(d) { return d.income[2008] }));
+            yScale.domain(d3.extent(data, function(d) { return d.lifeExpectancy[2008] }));
+            rScale.domain(d3.extent(data, function(d) { return d.population[2008] }));
+            
+            dataPoints.enter()
+                .append("circle")
+                .attr("r", function(d) { return rScale(d.population[2008])} )
+                .attr("cx", function(d) { return xScale(d.income[2008])} )
+                .attr("cy", function(d) { return yScale(d.lifeExpectancy[2008])} )
+                .attr("fill", function(d) {
+                    var queryRegion = d.region;
+                    var index = -1;
+                
+                    if (typeof regions.find(function(region) { return region == queryRegion }) == "undefined") {
+                        regions.push(queryRegion);
+                        index = regions.length - 1;
+                    }
+                    else {
+                        index = regions.findIndex(function(region) { return region == queryRegion });
+                    }
+                    return colorScale(index);
+                })
+                .attr("opacity", 0.8);
+        }
+    </script>
+</html>
