@@ -86,19 +86,7 @@
                 .attr("r", function(d) { return rScale(d.population[2008])} )
                 .attr("cx", function(d) { return xScale(d.income[2008])} )
                 .attr("cy", function(d) { return yScale(d.lifeExpectancy[2008])} )
-                .attr("fill", function(d) {
-                    var queryRegion = d.region;
-                    var index = -1;
-                
-                    if (typeof regions.find(function(region) { return region == queryRegion }) == "undefined") {
-                        regions.push(queryRegion);
-                        index = regions.length - 1;
-                    }
-                    else {
-                        index = regions.findIndex(function(region) { return region == queryRegion });
-                    }
-                    return colorScale(index);
-                })
+                .attr("fill", function(d) { return colorScale(d.region); })
                 .attr("opacity", 0.8);
         }
     </script>
