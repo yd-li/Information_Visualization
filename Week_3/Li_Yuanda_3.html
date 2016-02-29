@@ -68,15 +68,16 @@
             margin = {top: 90, right: 20, bottom: 20, left: 20},
             innerWidth = width - margin.left - margin.right,
             innerHeight = height - margin.top - margin.bottom;
-        var xScale = d3.scale.linear().range([10, innerWidth]),
-            yScale = d3.scale.linear().range([innerHeight, 10]),
-            rScale = d3.scale.linear().range([5, 25]);
-        var colorScale = d3.scale.category10();
+
         
         function renderGraph() {
             var dataPoints = vizDot.selectAll("circle")
                 .data(dataFiltered);
-            
+            var xScale = d3.scale.linear().range([10, innerWidth]);
+                yScale = d3.scale.linear().range([innerHeight, 10]);
+                rScale = d3.scale.linear().range([5, 25]);
+            var colorScale = d3.scale.category10();
+
             xScale.domain(d3.extent(data, function(d) { return d.income[2008] }));
             yScale.domain(d3.extent(data, function(d) { return d.lifeExpectancy[2008] }));
             rScale.domain(d3.extent(data, function(d) { return d.population[2008] }));
