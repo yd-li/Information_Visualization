@@ -30,6 +30,9 @@
             padding: 0;
             list-style: none;
         }
+        circle {
+            opacity: 0.7;
+        }
         .domain {
             fill: none;
             stroke: #000;
@@ -65,7 +68,7 @@
                 value="2008"
                 id="yearSelect"
                 onchange="setYear(this.value)"
-                style="width: 600">
+                style="width: 600px">
         <div id="tooltip">ToolTip</div>
     </body>
 
@@ -125,9 +128,10 @@
         }
 
         function renderCountry(data) {
-            list.selectAll("li")
-                .data(data)
-                .enter()
+            var selection = list.selectAll("li")
+                .data(data, function(d) { return d.name });
+
+            selection.enter()
                 .append("li")
                 .text(function(d) { return d.name })
                 .on("mouseenter", function(d, i) {
@@ -170,21 +174,21 @@
             xAxisGroup.call(xAxis);
             yAxisGroup.call(yAxis);
 
-            dotGroup.selectAll("circle")
-                .data(data, function(d) { return d.name })
-                .enter()
+            var selection = dotGroup.selectAll("circle")
+                            .data(data, function(d) { return d.name });
+
+            selection.enter()
                 .append("circle")
-                
-                .attr("opacity", 0.8)
+                //.attr("opacity", 0.8)
                 .on("click", function(d, i) { 
                     alert(d.name)} 
                 )
                 .on("mouseenter", function(d, i) {
                     d3.select(this).style({stroke: "black"});
                     d3.select("#tooltip").style({
+                        top: d3.event.clientY + 5,
+                        left: d3.event.clientX + 5,
                         visibility: "visible",
-                        top: d3.event.clientY,
-                        left: d3.event.clientX,
                         opacity: 1
                     }).text(d.name);
                     highlight(d.name)
@@ -198,7 +202,9 @@
                     unHighlight()
                 })
 
-            dotGroup.selectAll("circle").transition()
+            selection.exit().remove();
+
+            selection.transition()
                 .attr("r", function(d) { return Math.sqrt(rScale(d.population[year]) / Math.PI) } )
                 .attr("cx", function(d) { return xScale(d.income[year])} )
                 .attr("cy", function(d) { return yScale(d.lifeExpectancy[year])} )
